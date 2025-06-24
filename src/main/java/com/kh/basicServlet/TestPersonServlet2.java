@@ -46,8 +46,12 @@ public class TestPersonServlet2 extends HttpServlet {
 		request.setAttribute("recommend", recommend); // 저장하는 value는 Object 자료형
 		
 		// 3. html 작성을 jsp에게 위임하기
-		// 매개변수로 요청을 위임할 jsp의 경로를 추가
-		// request 내부에 context path가 있기 때문에 최상위 webapp 기준 절대경로 작성
+		/*
+		 * 매개변수로 요청을 위임할 jsp의 경로를 추가
+		 * request 내부에 context path가 있기 때문에 최상위 webapp 기준 절대경로 작성
+		 * getRequestDispatcher("jsp의 주소 || 서블릿의 url패턴(/first, /second, /life)")
+		 * 지정된 서블릿을 호출하여 요청처리를 위임하고, 최초 client가 요청했던 url에는 변화가 없다.
+		 */
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/person/testPerson.jsp");
 		dispatcher.forward(request, response); // 데이터 그대로 담아서 전송
 	}
