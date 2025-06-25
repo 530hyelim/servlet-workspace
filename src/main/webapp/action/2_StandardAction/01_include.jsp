@@ -13,6 +13,7 @@
 <%-- 	<%@ include file="footer.jsp" %> --%> <!-- JSP 주석 : ctrl+shift+slash -->
 	<br><br>
 	특징 : include하고 있는 페이지상에 선언되어 있는 변수를 현재 페이지에서도 사용 가능 <br>
+	컴파일 시에 로딩됨 vs. 아래는 사용자한테 화면 구현해줄 때 로딩됨 <br>
 <%-- 	year : <%= year %> --%>
 	<hr>
 	<h4>2. JSP 표준 액션태그 include를 이용한 방식 (동적 include 방식)</h4>
