@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<style>
+table {
+    border-collapse: collapse;
+    border: 1px solid #000;
+    margin: 5px;
+}
+th, td {
+    border: 1px solid #000;
+}
+table img {
+    width: 150px;
+}
+</style>
+</head>
+<body>
+	<h1>JSON</h1>
+	<pre>
+	JSON (JavaScript Object Notation)
+	 - AJAX 비동기 통신 시 가장 많이 사용되는 데이터 포맷
+	 - 서버에서 자바스크립트 객체/객체배열 형식으로 만들어서 응답주기 때문에 변환처리가 필요없음
+	   (스플릿따위 필요없음)
+	 - 순수 문자열로 이루어져 있어 가독성이 좋고, 가볍기 때문에 플랫폼간의 데이터 교환에서 자주 사용된다
+	 - JSON은 자바에서 제공하지 않는 객체표기법으로 사용하기 위해서는 라이브러리가 필요
+	   1. json-simple-1.1.1.jar
+	     - JSONArray : 배열형태의 자바스크립트 객체
+	     - JSONObject : 객체형태의 자바스크립트 객체
+	     
+	Gson (Google Json 오픈소스 라이브러리)
+	 - JSON 파일을 쉽게 읽고, 쉽게 생성할 수 있는 기능을 제공
+	 - Java의 객체를 Json으로 만들고자 할 때
+	  * toJson(자바 객체, 출력 스트림)
+	 - JSON 형태로 넘어온 데이터를 JAVA 객체로 만들고자 할 때
+	  * fromJson(json 데이터, 변경시킬 클래스)
+	</pre>
+	<div>
+        <button type="button" id="btn">실행</button>
+    </div>
+    <div>
+        <input type="search" id="searchId" placeholder="id검색"/>
+        <!-- form으로 데이터 보내는게 아니라 직접 .val()로 값 보내주기 때문에 name속성 필요없음 -->
+        <button type="button" id="btn-search-id">검색</button>
+    </div>
+    <div>
+        <table>
+            <tr>
+                <th>아이디</th>
+                <td><input type="text" name="id"/></td>
+            </tr>
+            <tr>
+                <th>이름</th>
+                <td><input type="text" name="name"/></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center;">
+                    <button id="btn-save-member">회원가입</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="wrapper"></div>
+    <script>
+		$(function() {
+			$("#btn").click(function(){
+				$.ajax({
+					url : "/servlet/ajax/json",
+					//dataType : "json", 
+					// 백엔드에서 response.setContentType("application/json")으로 설정하는 것이 좋음
+					success : function(data) {
+						console.log(data);
+						// JSON -> JS : JSON.parse(JSON문자열)
+						// JSON (js 객체 형태의 문자열) 배열 아니라서 반복문 못돌림
+						//let arr = JSON.parse(data); 
+						//console.log(arr);
+						// DataType="json"으로 설정하면 자동으로 파싱해줌
+						// JS -> JSON : JSON.stringify(js객체)
+					},
+					error : function(xhr) {
+						console.log(arguments);
+						console.log(xhr);
+					}
+				});
+			});
+		});
+		$("#btn-search-id").click(function() {
+			$.ajax({
+				url : "/servlet/ajax/json",
+				data : {
+					searchId : $("#searchId").val()
+				},
+				success : function(data) {
+					//console.log(data);
+					if (data) {
+						const table = $("<table><table>");
+						table.append(`<tr><td>${data.name}</td></tr>`)
+							 .append(`<tr><td>${data.age}</td></tr>`)
+							 .append(`<tr><td>${data.gender}</td></tr>`)
+							 .appendTo(".wrapper");
+					} else {
+						alert("해당하는 회원이 없습니다.");
+					}
+				},
+				error : function(xhr) {
+					console.log(xhr);
+				}
+			});
+		});
+	</script>
+</body>
+</html>

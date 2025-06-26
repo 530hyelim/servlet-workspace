@@ -56,9 +56,35 @@ table img {
 					//  - async : 서버와의 통신시 비동기 처리방식 설정여부 (기본값 true)
 					//  - crossDomain : 타 도메인 호출 가능 여부 설정 (기본값 false)
 					//		(다른 서버에서 요청 보내는 것을 막기 위함)
+					// front랑 backend 서버가 다르면 ip랑 port번호가 달라서 true 요청/응답 가능
 					//  - contentType : request의 데이터 인코딩 방식 
 					// 		(기본적으로 url 방식으로 변환 처리해서 보내기 때문에 특별한 경우가 아니면 굳이 설정안해도됨)
 					//  - processData : 서버로 보내는 값이 File 형태의 값인 경우 설정하는 속성
+				});
+			});
+			$("#btn2").click(function() {
+				$.ajax({
+					url : "/servlet/ajax/csv", // 브라우저에서 요청보내는거라서 브라우저 기준으로
+					success : function(data) {
+						console.log(data);
+						const $table = $("<table></table>");
+						const persons = data.split("\n").slice(0, data.split("\n").length-1);
+						// 가장 마지막 배열의 빈문자열 제거하기 위해 slice() 메서드 사용
+						console.log(persons);
+						$(persons).each(function(index, person) { // js는 순서 반대임
+							const arr = person.split(",");
+							let tr = "<tr>";
+								tr += "<td>"+arr[0]+"</td>";
+								tr += `<td>${arr[1]}</td>`;
+								tr += `<td>${arr[2]}</td>`;
+								tr += "</tr>";
+							$table.append(tr);
+						});
+						$(".container").append($table);
+					},
+					error : function(xhr, status, err) {
+						console.log(xhr, status, err);
+					}
 				});
 			});
 		})
